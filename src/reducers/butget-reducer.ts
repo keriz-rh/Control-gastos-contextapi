@@ -15,7 +15,6 @@ export type BudgetActions =
 
 
 export type BudgetState = {
-    amount: number
     budget: number
     modal: boolean
     expenses: Expense[]
@@ -34,7 +33,7 @@ const localStorageExpenses = (): Expense[] => {
 }
 
 export const initialState: BudgetState = {
-    amount: 0,
+    
     budget: initialBudget(),
     modal: false,
     expenses: localStorageExpenses(),
