@@ -12,10 +12,10 @@ function App() {
 
   const isValidBuget = useMemo(() => state.budget > 0, [state.budget])
 
-useEffect(() =>{
-localStorage.setItem('budget', state.budget.toString())
-localStorage.setItem('expenses', JSON.stringify(state.expenses))
-}, [state] )
+  useEffect(() => {
+    localStorage.setItem('budget', state.budget.toString())
+    localStorage.setItem('expenses', JSON.stringify(state.expenses))
+  }, [state])
 
   return (
     <>
@@ -31,11 +31,17 @@ localStorage.setItem('expenses', JSON.stringify(state.expenses))
 
       {isValidBuget && (
         <main className="max-w-3xl mx-auto py-10">
-          <FilterByCatgory/>
+          <FilterByCatgory />
           <ExpenseModal />
-          <ExpenseList/>
+          <ExpenseList />
         </main>
       )}
+
+      <footer className="bg-blue-600 py-4 mt-10">
+        <div className="text-center text-white">
+          <p>&copy; 2025 KerizrH. Todos los derechos reservados.</p>
+        </div>
+      </footer >
     </>
   )
 }

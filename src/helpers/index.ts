@@ -1,6 +1,8 @@
 // Formatea una cantidad numérica a formato de moneda en USD
 export function formatCurrency(amount: number) {
     return new Intl.NumberFormat("en-US", {
+      minimumFractionDigits: 2, // Asegura que siempre haya dos decimales
+      maximumFractionDigits: 2, // Limita los decimales a 2
       style: "currency",
       currency: "USD",
     }).format(amount);

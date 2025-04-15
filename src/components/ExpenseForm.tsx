@@ -122,13 +122,14 @@ function ExpenseForm() {
                 <input
                     type="number"
                     id="amount"
+                    step="0.01"
                     min={0}
-                    placeholder="Ej. 300"
+                    placeholder="Ej. 300.50"
                     className="bg-slate-100 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
                     name="amount"
                     onChange={handleChange}
-                    value={expense.amount}
-                />
+                    value={expense.amount === 0 ? "" : expense.amount}
+                    />
             </div>
 
             <div className="flex flex-col space-y-2">
