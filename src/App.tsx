@@ -37,11 +37,11 @@ function App() {
         </main>
       )}
 
-      <footer className="bg-blue-600 py-4 mt-10">
+      <footer className="bg-blue-600 py-4 mt-auto">
         <div className="text-center text-white">
           <p>&copy; 2025 KerizrH. Todos los derechos reservados.</p>
         </div>
-      </footer >
+      </footer>
     </>
   )
 }

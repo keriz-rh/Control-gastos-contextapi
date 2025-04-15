@@ -28,11 +28,12 @@ return (
             <input
                 id="budget"
                 name="budget"
+                step="0.01"
                 min={0}
                 type="number"
                 className="w-full bg-white border border-gray-200 p-2"
                 placeholder="Definir Presupuesto"
-                value={budget}
+                value={budget === 0 ? '' : budget}  
                 onChange={handleChange}
             />
         </div>
