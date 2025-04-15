@@ -2,7 +2,7 @@ import { categories } from "../data/categories";
 import DatePicker from 'react-date-picker';
 import 'react-calendar/dist/Calendar.css'
 import 'react-date-picker/dist/DatePicker.css'
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { DraftExpense, Value } from "../types";
 import ErrorMenssage from "./ErrorMenssage";
 import { useBudget } from "../hooks/useBudget";
@@ -17,7 +17,20 @@ function ExpenseForm() {
     })
 
     const [error, setError] = useState('')
-    const { dispatch } = useBudget()
+    const [previusAmount, setPreviusAmount] = useState(0)
+    const { dispatch, state, remainingBudget } = useBudget()
+    
+    useEffect(() => {
+        if (state.editingId) {
+          const editingExpense = state.expenses.find(currentExpense => currentExpense.id === state.editingId)
+          if (editingExpense) {
+            const { amount, expenseName, category, date } = editingExpense
+            setExpense({ amount, expenseName, category, date })
+            setPreviusAmount(amount)
+          }
+        }
+      }, [state.editingId])
+      
 
     const handleChange = (e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>) => {
         const { name, value } = e.target;
@@ -44,8 +57,31 @@ function ExpenseForm() {
             return
         }
 
-        // Agregar un nuevo gasto
-        dispatch({ type: 'add-expense', payload: { expense } })
+        //validar no sobrepasar el limite.
+        
+        if (state.editingId) {
+            // Edición: validar diferencia
+            if ((expense.amount - previusAmount) > remainingBudget) {
+                setError('Ese gasto se sale del presupuesto')
+                return
+            }
+        } else {
+            // Nuevo gasto: validar directo
+            if (expense.amount > remainingBudget) {
+                setError('Ese gasto se sale del presupuesto')
+                return
+            }
+        }
+        
+
+        // Agregar o actualizar un nuevo gasto
+        if (state.editingId) {
+            dispatch({ type: 'update-expense', payload: {expense: { id: state.editingId, ...expense } }})
+            dispatch({ type: 'clear-editing' })
+        } else {
+
+            dispatch({ type: 'add-expense', payload: { expense } })
+        }
 
         //reiniciar el state
         setExpense({
@@ -54,13 +90,13 @@ function ExpenseForm() {
             category: '',
             date: new Date()
         })
-
+        setPreviusAmount(0)
     }
 
     return (
         <form className="space-y-8" onSubmit={handleSubmit}>
             <legend className="uppercase text-center text-3xl font-extrabold text-blue-600 border-b-4 border-blue-500 py-4">
-                Nuevo Gasto
+                {state.editingId ? 'Editar Gasto' : 'Nuevo Gasto'}
             </legend>
 
             {error && <ErrorMenssage>{error}</ErrorMenssage>}
@@ -86,6 +122,7 @@ function ExpenseForm() {
                 <input
                     type="number"
                     id="amount"
+                    min={0}
                     placeholder="Ej. 300"
                     className="bg-slate-100 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
                     name="amount"
@@ -129,7 +166,8 @@ function ExpenseForm() {
             <input
                 type="submit"
                 className="bg-blue-600 hover:bg-blue-700 transition-colors cursor-pointer w-full p-3 text-white uppercase font-bold rounded-lg"
-                value="Registrar Gasto"
+                value={state.editingId ? 'Guardar Cambios' : 'Registrar Gasto'}
+
             />
         </form>
     );

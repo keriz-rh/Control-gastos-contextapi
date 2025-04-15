@@ -8,4 +8,11 @@ export const categories : Category[] = [
     { id: '5', name: 'Ocio', icon: 'ocio' },
     { id: '6', name: 'Salud', icon: 'salud' },
     { id: '7', name: 'Suscripciones', icon: 'suscripciones' },
+    { id: '8', name: 'Transporte', icon: 'transporte' },
+    { id: '9', name: 'Educación', icon: 'educacion' },
+    { id: '10', name: 'Mascotas', icon: 'mascotas' },
+    { id: '11', name: 'Ropa', icon: 'ropa' },
+    { id: '12', name: 'Tecnología', icon: 'tecnologia' },
+    { id: '13', name: 'Imprevistos', icon: 'imprevistos' },
+    { id: '14', name: 'Entretenimiento', icon: 'entretenimiento' }
   ];
